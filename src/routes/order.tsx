@@ -29,9 +29,9 @@ function FoodOrder() {
   const [type, setType] = useState<"dine-in" | "takeaway">("dine-in");
   const [name, setName] = useState(""); const [when, setWhen] = useState(""); const [cart, setCart] = useState<Record<string, number>>({});
   const items = cartItems(cart); const total = priceOf(menu, items);
-  const submit = () => {
-    if (!name || !when || !items.length) return toast.error("Add your name, time and at least one dish.");
-    const err = validateOrderTime(type, new Date(when)); if (err) return toast.error(err);
+  const submit = (): void => {
+    if (!name || !when || !items.length) return void toast.error("Add your name, time and at least one dish.");
+    const err = validateOrderTime(type, new Date(when)); if (err) return void toast.error(err);
     set((s) => ({ ...s,
       menu: s.menu.map((m) => ({ ...m, portions: m.portions - (cart[m.id] ?? 0) })),
       orders: [...s.orders, { id: uid(), source: "customer", type, customer: name, items, scheduledFor: new Date(when).getTime(), createdAt: Date.now(), status: "placed", total }] }));
@@ -54,9 +54,9 @@ function EventBooking() {
   const { set, uid } = useStore();
   const [f, setF] = useState({ customer: "", phone: "", occasion: "Birthday", date: "", guests: 20, perHead: 500 });
   const total = f.guests * f.perHead; const deposit = eventDeposit(total);
-  const submit = () => {
-    if (!f.customer || !f.phone || !f.date) return toast.error("Fill in name, phone and date.");
-    const err = validateEventDate(new Date(f.date)); if (err) return toast.error(err);
+  const submit = (): void => {
+    if (!f.customer || !f.phone || !f.date) return void toast.error("Fill in name, phone and date.");
+    const err = validateEventDate(new Date(f.date)); if (err) return void toast.error(err);
     const big = needsPermit(f.guests);
     set((s) => ({ ...s, events: [...s.events, { id: uid(), customer: f.customer, phone: f.phone, occasion: f.occasion, date: new Date(f.date).getTime(), guests: f.guests, total, deposit, status: big ? "pending-permit" : "confirmed" }] }));
     toast.success(`Deposit ₹${deposit} paid (demo). ${big ? "Waiting for admin permit." : "Event confirmed!"}`);

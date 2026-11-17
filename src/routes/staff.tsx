@@ -39,8 +39,8 @@ function Waiter() {
   const { menu, orders, set, uid } = useStore();
   const [table, setTable] = useState(""); const [cart, setCart] = useState<Record<string, number>>({});
   const items = cartItems(cart);
-  const send = () => {
-    if (!table || !items.length) return toast.error("Enter table and dishes.");
+  const send = (): void => {
+    if (!table || !items.length) return void toast.error("Enter table and dishes.");
     set((s) => ({ ...s, menu: s.menu.map((m) => ({ ...m, portions: m.portions - (cart[m.id] ?? 0) })),
       orders: [...s.orders, { id: uid(), source: "staff", type: "table", customer: `Table ${table}`, table, items, scheduledFor: Date.now(), createdAt: Date.now(), status: "placed", total: priceOf(s.menu, items) }] }));
     setCart({}); setTable(""); toast.success("Sent to kitchen & cashier");
