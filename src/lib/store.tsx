@@ -13,7 +13,7 @@ export type EventBooking = {
   id: string; customer: string; phone: string; occasion: string; date: number; guests: number;
   total: number; deposit: number; status: "pending-permit" | "confirmed" | "rejected" | "cancelled";
 };
-export type Attendance = { id: string; name: string; role: "Cashier" | "Cook" | "Waiter"; date: string; checkIn?: string; checkOut?: string };
+export type Attendance = { id: string; name: string; role: "Cashier" | "Cook" | "Waiter"; date: string; checkIn?: string; checkOut?: string | undefined };
 type State = { menu: MenuItem[]; orders: Order[]; events: EventBooking[]; attendance: Attendance[] };
 
 const MENU: MenuItem[] = [
@@ -46,9 +46,9 @@ function seed(): State {
   for (let d = 13; d >= 1; d--) {
     const n = 6 + Math.floor(rnd() * 8);
     for (let k = 0; k < n; k++) {
-      const items = [{ id: MENU[Math.floor(rnd() * 7)].id, qty: 1 + Math.floor(rnd() * 3) }, { id: "m6", qty: Math.floor(rnd() * 4) }].filter((i) => i.qty);
+      const items = [{ id: MENU[Math.floor(rnd() * 7)]!.id, qty: 1 + Math.floor(rnd() * 3) }, { id: "m6", qty: Math.floor(rnd() * 4) }].filter((i) => i.qty);
       const t = now - d * DAY + k * HOUR;
-      orders.push({ id: uid(), source: rnd() > 0.5 ? "staff" : "customer", type: rnd() > 0.7 ? "takeaway" : "table", customer: "Walk-in", items, scheduledFor: t, createdAt: t, status: "paid", payment: pays[Math.floor(rnd() * 4)], total: priceOf(MENU, items) });
+      orders.push({ id: uid(), source: rnd() > 0.5 ? "staff" : "customer", type: rnd() > 0.7 ? "takeaway" : "table", customer: "Walk-in", items, scheduledFor: t, createdAt: t, status: "paid", payment: pays[Math.floor(rnd() * 4)]!, total: priceOf(MENU, items) });
     }
   }
   orders.push(

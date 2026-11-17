@@ -29,7 +29,7 @@ function Admin() {
   const daily = useMemo(() => {
     const m: Record<string, number> = {};
     for (let d = range - 1; d >= 0; d--) m[dayKey(Date.now() - d * DAY)] = 0;
-    paid.forEach((o) => { const k = dayKey(o.createdAt); if (k in m) m[k] += o.total; });
+    paid.forEach((o) => { const k = dayKey(o.createdAt); if (k in m) m[k] = (m[k] ?? 0) + o.total; });
     return Object.entries(m).map(([d, v]) => ({ day: d.slice(5), sales: v }));
   }, [paid, range]);
   const payMix = (["cash", "card", "upi"] as const).map((p) => ({ name: p.toUpperCase(), value: paid.filter((o) => o.payment === p).reduce((s, o) => s + o.total, 0) }));
