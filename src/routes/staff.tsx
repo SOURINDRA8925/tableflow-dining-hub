@@ -8,6 +8,13 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Fingerprint } from "lucide-react";
 
 export const Route = createFileRoute("/staff")({
@@ -35,12 +42,14 @@ function OrderCard({ o, children }: { o: Order; children?: React.ReactNode }) {
   );
 }
 
+const TABLES = Array.from({ length: 20 }, (_, i) => String(i + 1));
+
 function Waiter() {
   const { menu, orders, set, uid } = useStore();
   const [table, setTable] = useState(""); const [cart, setCart] = useState<Record<string, number>>({});
   const items = cartItems(cart);
   const send = (): void => {
-    if (!table || !items.length) return void toast.error("Enter table and dishes.");
+    if (!table || !items.length) return void toast.error("Select table and dishes.");
     set((s) => ({ ...s, menu: s.menu.map((m) => ({ ...m, portions: m.portions - (cart[m.id] ?? 0) })),
       orders: [...s.orders, { id: uid(), source: "staff", type: "table", customer: `Table ${table}`, table, items, scheduledFor: Date.now(), createdAt: Date.now(), status: "placed", total: priceOf(s.menu, items) }] }));
     setCart({}); setTable(""); toast.success("Sent to kitchen & cashier");
@@ -50,7 +59,40 @@ function Waiter() {
     <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
       <Card className="space-y-4 p-5">
         <h2 className="text-2xl">New table order</h2>
-        <Input placeholder="Table number" value={table} onChange={(e) => setTable(e.target.value)} inputMode="numeric" />
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground">Select Table</label>
+          <Select value={table} onValueChange={setTable}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select table..." />
+            </SelectTrigger>
+            <SelectContent>
+              {TABLES.map((t) => (
+                <SelectItem key={t} value={t}>
+                  Table {t}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Quick horizontal scrollable table buttons */}
+          <div className="pt-1">
+            <span className="text-xs text-muted-foreground">Quick select (scroll to browse tables):</span>
+            <div className="mt-1 flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+              {TABLES.map((t) => (
+                <Button
+                  key={t}
+                  type="button"
+                  size="sm"
+                  variant={table === t ? "default" : "outline"}
+                  className="h-8 shrink-0 px-3 text-xs"
+                  onClick={() => setTable(t)}
+                >
+                  Table {t}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
         <ItemPicker menu={menu} cart={cart} setCart={setCart} />
         <Button className="w-full" size="lg" onClick={send}>Send order · ₹{priceOf(menu, items)}</Button>
       </Card>
