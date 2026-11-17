@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Prototype keeps all data in browser localStorage via `src/lib/store.tsx` (synced across tabs) — no backend yet, so staff/cook/cashier screens share state on one device.
+- Booking rules live as pure functions in `src/lib/rules.ts` with tests in `src/test/rules.test.ts`.
