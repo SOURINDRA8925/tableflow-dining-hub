@@ -6,7 +6,7 @@ export type MenuItem = { id: string; name: string; price: number; category: stri
 export type OrderStatus = "placed" | "cooking" | "ready" | "served" | "paid";
 export type Order = {
   id: string; source: "customer" | "staff"; type: "dine-in" | "takeaway" | "table";
-  customer: string; table?: string; items: { id: string; qty: number }[];
+  customer: string; table?: string; waiter?: string; items: { id: string; qty: number }[];
   scheduledFor: number; createdAt: number; status: OrderStatus; payment?: Payment; total: number;
 };
 export type EventBooking = {
@@ -14,7 +14,8 @@ export type EventBooking = {
   total: number; deposit: number; status: "pending-permit" | "confirmed" | "rejected" | "cancelled";
 };
 export type Attendance = { id: string; name: string; role: "Cashier" | "Cook" | "Waiter"; date: string; checkIn?: string; checkOut?: string | undefined };
-type State = { menu: MenuItem[]; orders: Order[]; events: EventBooking[]; attendance: Attendance[] };
+export type TableLock = { table: string; waiterName: string; sessionId: string; updatedAt: number };
+type State = { menu: MenuItem[]; orders: Order[]; events: EventBooking[]; attendance: Attendance[]; tableLocks?: Record<string, TableLock> };
 
 const MENU: MenuItem[] = [
   { id: "m1", name: "Chicken Biryani", price: 280, category: "Mains", portions: 10, emoji: "🍛" },
@@ -52,7 +53,7 @@ function seed(): State {
     }
   }
   orders.push(
-    { id: uid(), source: "staff", type: "table", customer: "Table 4", table: "4", items: [{ id: "m1", qty: 2 }, { id: "m6", qty: 4 }], scheduledFor: now, createdAt: now - 600000, status: "cooking", total: priceOf(MENU, [{ id: "m1", qty: 2 }, { id: "m6", qty: 4 }]) },
+    { id: uid(), source: "staff", type: "table", customer: "Table 4 (Arjun Sen)", table: "4", waiter: "Arjun Sen", items: [{ id: "m1", qty: 2 }, { id: "m6", qty: 4 }], scheduledFor: now, createdAt: now - 600000, status: "cooking", total: priceOf(MENU, [{ id: "m1", qty: 2 }, { id: "m6", qty: 4 }]) },
     { id: uid(), source: "customer", type: "takeaway", customer: "Sneha", items: [{ id: "m3", qty: 3 }], scheduledFor: now + 2 * HOUR, createdAt: now - 3600000, status: "placed", total: 420 },
   );
   const attendance: Attendance[] = [];
@@ -64,6 +65,7 @@ function seed(): State {
   return {
     menu: MENU, orders, attendance,
     events: [{ id: uid(), customer: "Kabir Mehta", phone: "98300 12345", occasion: "Birthday", date: now + 3.5 * DAY, guests: 45, total: 22500, deposit: 9000, status: "pending-permit" }],
+    tableLocks: {},
   };
 }
 
@@ -75,8 +77,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<State>(() => seed());
   useEffect(() => {
     const raw = localStorage.getItem(KEY);
-    if (raw) setState(JSON.parse(raw)); else localStorage.setItem(KEY, JSON.stringify(state));
-    const onStorage = (e: StorageEvent) => { if (e.key === KEY && e.newValue) setState(JSON.parse(e.newValue)); };
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (!parsed.tableLocks) parsed.tableLocks = {};
+        setState(parsed);
+      } catch {
+        setState(seed());
+      }
+    } else {
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (!parsed.tableLocks) parsed.tableLocks = {};
+          setState(parsed);
+        } catch {}
+      }
+    };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
     // eslint-disable-next-line react-hooks/exhaustive-deps

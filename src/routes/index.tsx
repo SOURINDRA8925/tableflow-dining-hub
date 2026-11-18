@@ -7,9 +7,9 @@ import { Clock, PartyPopper, ShoppingBag } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Today's Menu — Masala House" },
+    { title: "Today's Menu — Fancy Restaurant & Caterers" },
     { name: "description", content: "See which dishes are available today and how many portions are left." },
-    { property: "og:title", content: "Today's Menu — Masala House" },
+    { property: "og:title", content: "Today's Menu — Fancy Restaurant & Caterers" },
     { property: "og:description", content: "See which dishes are available today and how many portions are left." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }),
@@ -23,7 +23,7 @@ function Index() {
       <section className="mb-10 grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end">
         <div>
           <p className="text-sm uppercase tracking-widest text-primary">Fresh today</p>
-          <h1 className="mt-2 text-5xl leading-tight text-foreground md:text-6xl">What's cooking at Masala House</h1>
+          <h1 className="mt-2 text-5xl leading-tight text-foreground md:text-6xl">What's cooking at Fancy Restaurant & Caterers</h1>
           <p className="mt-4 max-w-xl text-muted-foreground">Live portion counts, updated by our kitchen. Order ahead, pick up a takeaway, or plan your celebration with us.</p>
           <div className="mt-6 flex flex-wrap gap-3"><Button asChild><Link to="/order">Order or book an event</Link></Button></div>
         </div>

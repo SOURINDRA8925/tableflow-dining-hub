@@ -13,7 +13,7 @@ export function AppHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-display text-xl text-primary">
-          <UtensilsCrossed className="h-5 w-5" /> Masala House
+          <UtensilsCrossed className="h-5 w-5" /> Fancy Restaurant & Caterers
         </Link>
         <nav className="flex flex-wrap gap-1 text-sm">
           {links.map((l) => (

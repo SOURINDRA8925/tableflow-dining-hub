@@ -11,9 +11,9 @@ import { DAY } from "@/lib/rules";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [
-    { title: "Admin Dashboard — Masala House" },
+    { title: "Admin Dashboard — Fancy Restaurant & Caterers" },
     { name: "description", content: "Sales analysis, payment mix, best sellers, staff attendance and event permits." },
-    { property: "og:title", content: "Admin Dashboard — Masala House" },
+    { property: "og:title", content: "Admin Dashboard — Fancy Restaurant & Caterers" },
     { property: "og:description", content: "Restaurant sales, payments, attendance and events." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }),

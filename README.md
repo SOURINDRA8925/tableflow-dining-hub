@@ -1,4 +1,4 @@
-# Tableflow Dining Hub
+# Fancy Restaurant & Caterers (Tableflow Dining Hub)
 
 i want  a prototype for a restaurant where Admin
 

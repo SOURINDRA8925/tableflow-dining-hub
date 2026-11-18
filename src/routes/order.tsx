@@ -13,9 +13,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/order")({
   head: () => ({ meta: [
-    { title: "Order Ahead & Book Events — Masala House" },
+    { title: "Order Ahead & Book Events — Fancy Restaurant & Caterers" },
     { name: "description", content: "Pre-order food 3 hours ahead, takeaway with 1 hour notice, or book birthdays 3–4 days ahead." },
-    { property: "og:title", content: "Order Ahead & Book Events — Masala House" },
+    { property: "og:title", content: "Order Ahead & Book Events — Fancy Restaurant & Caterers" },
     { property: "og:description", content: "Pre-order food, takeaway, and birthday event bookings." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }),
