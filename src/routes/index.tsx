@@ -28,7 +28,7 @@ function Index() {
           <div className="mt-6 flex flex-wrap gap-3"><Button asChild><Link to="/order">Order or book an event</Link></Button></div>
         </div>
         <div className="grid gap-3 text-sm">
-          {[{ i: Clock, t: "Advance food orders", d: "At least 3 hours ahead" }, { i: ShoppingBag, t: "Takeaway", d: "Tell us 1 hour before" }, { i: PartyPopper, t: "Birthdays & events", d: "3–4 days ahead · 40% advance" }].map(({ i: I, t, d }) => (
+          {[{ i: Clock, t: "Advance food orders", d: "At least 3 hours ahead" }, { i: ShoppingBag, t: "Takeaway", d: "Tell us 1 hour before" }, { i: PartyPopper, t: "Birthdays & events", d: "3–90 days ahead · 40% advance" }].map(({ i: I, t, d }) => (
             <div key={t} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3"><I className="h-5 w-5 text-primary" /><div><div className="font-medium">{t}</div><div className="text-muted-foreground">{d}</div></div></div>
           ))}
         </div>

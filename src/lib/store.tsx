@@ -64,7 +64,11 @@ function seed(): State {
   }
   return {
     menu: MENU, orders, attendance,
-    events: [{ id: uid(), customer: "Kabir Mehta", phone: "98300 12345", occasion: "Birthday", date: now + 3.5 * DAY, guests: 45, total: 22500, deposit: 9000, status: "pending-permit" }],
+    events: [
+      { id: uid(), customer: "Kabir Mehta", phone: "98300 12345", occasion: "Birthday", date: now + 3.5 * DAY, guests: 45, total: 22500, deposit: 9000, status: "pending-permit" },
+      { id: uid(), customer: "Sneha Joshi", phone: "98700 56789", occasion: "Anniversary", date: now + 10 * DAY, guests: 60, total: 36000, deposit: 14400, status: "pending-permit" },
+      { id: uid(), customer: "Rajan Kapoor", phone: "99100 11223", occasion: "Corporate Dinner", date: now + 20 * DAY, guests: 25, total: 15000, deposit: 6000, status: "confirmed" },
+    ],
     tableLocks: {},
   };
 }

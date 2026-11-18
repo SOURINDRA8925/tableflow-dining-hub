@@ -67,14 +67,14 @@ function EventBooking() {
         <div><Label>Name</Label><Input value={f.customer} onChange={(e) => setF({ ...f, customer: e.target.value })} /></div>
         <div><Label>Phone</Label><Input value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></div>
         <div><Label>Occasion</Label><Input value={f.occasion} onChange={(e) => setF({ ...f, occasion: e.target.value })} /></div>
-        <div><Label>Date & time (3–4 days ahead)</Label><Input type="datetime-local" value={f.date} onChange={(e) => setF({ ...f, date: e.target.value })} /></div>
+        <div><Label>Date &amp; time (3–90 days ahead)</Label><Input type="datetime-local" value={f.date} onChange={(e) => setF({ ...f, date: e.target.value })} /></div>
         <div><Label>Guests</Label><Input type="number" min={1} value={f.guests} onChange={(e) => setF({ ...f, guests: +e.target.value })} /></div>
         <div><Label>Package per head (₹)</Label><Input type="number" value={f.perHead} onChange={(e) => setF({ ...f, perHead: +e.target.value })} /></div>
       </div>
       <div className="rounded-lg bg-secondary p-4 text-sm">
         <div className="flex justify-between"><span>Estimated total</span><span>₹{total}</span></div>
         <div className="flex justify-between font-semibold"><span>Pay now (40%)</span><span>₹{deposit}</span></div>
-        <p className="mt-2 text-muted-foreground">You can cancel up to 1 day before. The 40% advance is not refundable. {f.guests >= BIG_EVENT_GUESTS && "Events with " + BIG_EVENT_GUESTS + "+ guests need admin approval."}</p>
+        <p className="mt-2 text-muted-foreground">You can cancel up to 1 day before. The 40% advance is not refundable. {f.guests >= BIG_EVENT_GUESTS && "Events with " + BIG_EVENT_GUESTS + "+ guests need admin approval before confirmation."}</p>
       </div>
       <Button onClick={submit}>Pay 40% & book</Button>
     </Card>
