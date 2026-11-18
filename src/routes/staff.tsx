@@ -297,14 +297,14 @@ function Waiter() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-      <Card className="space-y-4 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-          <div>
+      <Card className="space-y-4 p-3 sm:p-5 min-w-0">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 border-b border-border pb-3">
+          <div className="min-w-0">
             <h2 className="text-xl font-semibold">New table order</h2>
             <p className="text-xs text-muted-foreground">Select an open table to seat guests, or select your occupied table to add items</p>
           </div>
-          <div className="flex items-center gap-2 rounded-lg bg-secondary/80 px-2.5 py-1">
-            <User className="h-3.5 w-3.5 text-muted-foreground" />
+          <div className="flex items-center gap-2 rounded-lg bg-secondary/80 px-2.5 py-1 self-start sm:self-auto">
+            <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
             <span className="text-xs font-medium">Waiter:</span>
             <Select value={currentWaiter} onValueChange={handleWaiterChange}>
               <SelectTrigger className="h-7 w-32 border-0 bg-transparent text-xs font-semibold focus:ring-0">
@@ -322,11 +322,11 @@ function Waiter() {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-foreground">
+          <div className="flex flex-wrap items-start justify-between gap-1 min-w-0">
+            <label className="text-sm font-medium text-foreground min-w-0">
               Select Table{" "}
               {table && (
-                <span className="text-primary font-bold">
+                <span className="text-primary font-bold break-words">
                   (Table {table} {isAddOnOrder ? "· Add-on Mode" : "assigned to you"})
                 </span>
               )}
@@ -335,7 +335,7 @@ function Waiter() {
               <button
                 type="button"
                 onClick={releaseCurrentTable}
-                className="text-xs text-muted-foreground hover:text-destructive flex items-center gap-1 transition-colors"
+                className="text-xs text-muted-foreground hover:text-destructive flex items-center gap-1 transition-colors shrink-0"
               >
                 <XCircle className="h-3.5 w-3.5" /> Release Table {table}
               </button>
@@ -364,9 +364,9 @@ function Waiter() {
 
           {/* Quick horizontal scrollable table buttons */}
           <div className="pt-1">
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-1">
               <span className="text-xs text-muted-foreground">Quick select (scroll to browse tables):</span>
-              <span className="text-[11px] text-muted-foreground flex items-center gap-2">
+              <span className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-x-2 gap-y-1">
                 <span>
                   <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 mr-1" />
                   {freeTables.length} Free
@@ -425,10 +425,10 @@ function Waiter() {
 
           {/* Active dining occupied table banner (Add-on mode notice) */}
           {table && isAddOnOrder && (
-            <div className="rounded-lg border border-primary/40 bg-primary/10 p-3 text-xs space-y-1.5">
-              <div className="flex items-center justify-between font-semibold text-primary">
-                <span className="flex items-center gap-1.5">
-                  <Utensils className="h-4 w-4 text-primary" />
+            <div className="rounded-lg border border-primary/40 bg-primary/10 p-3 text-xs space-y-1.5 min-w-0">
+              <div className="flex flex-wrap items-start justify-between gap-2 font-semibold text-primary">
+                <span className="flex items-center gap-1.5 min-w-0 break-words">
+                  <Utensils className="h-4 w-4 text-primary shrink-0" />
                   Table {table} — Occupied by You ({currentWaiter}) · Add-on Order Mode
                 </span>
                 <Badge variant="outline" className="border-primary/50 bg-background/50 text-[10px]">
@@ -454,7 +454,7 @@ function Waiter() {
 
           {/* Tables occupied by other waiters */}
           {otherOccupiedTables.length > 0 && (
-            <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2">
+            <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2 min-w-0 break-words">
               <Lock className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
               <div>
                 <span className="font-semibold">Tables occupied by other waiters (locked to them): </span>
@@ -571,7 +571,7 @@ function Biometric() {
 
 function StaffPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="mx-auto max-w-6xl px-4 py-8 overflow-x-hidden">
       <h1 className="mb-4 text-4xl">Staff console</h1>
       <Tabs defaultValue="waiter">
         <TabsList className="flex-wrap h-auto"><TabsTrigger value="waiter">Waiter</TabsTrigger><TabsTrigger value="cook">Cook</TabsTrigger><TabsTrigger value="cashier">Cashier</TabsTrigger><TabsTrigger value="portions">Portions</TabsTrigger><TabsTrigger value="bio">Attendance</TabsTrigger></TabsList>
