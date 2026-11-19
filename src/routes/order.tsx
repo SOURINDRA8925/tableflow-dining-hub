@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useStore, priceOf } from "@/lib/store";
 import { ItemPicker, cartItems } from "@/components/ItemPicker";
-import { validateOrderTime, validateEventDate, eventDeposit, canCancelEvent, needsPermit, BIG_EVENT_GUESTS } from "@/lib/rules";
+import { validateOrderTime, validateEventDate, eventDeposit, canCancelEvent } from "@/lib/rules";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -57,9 +57,8 @@ function EventBooking() {
   const submit = (): void => {
     if (!f.customer || !f.phone || !f.date) return void toast.error("Fill in name, phone and date.");
     const err = validateEventDate(new Date(f.date)); if (err) return void toast.error(err);
-    const big = needsPermit(f.guests);
-    set((s) => ({ ...s, events: [...s.events, { id: uid(), customer: f.customer, phone: f.phone, occasion: f.occasion, date: new Date(f.date).getTime(), guests: f.guests, total, deposit, status: big ? "pending-permit" : "confirmed" }] }));
-    toast.success(`Deposit ₹${deposit} paid (demo). ${big ? "Waiting for admin permit." : "Event confirmed!"}`);
+    set((s) => ({ ...s, events: [...s.events, { id: uid(), customer: f.customer, phone: f.phone, occasion: f.occasion, date: new Date(f.date).getTime(), guests: f.guests, total, deposit, status: "pending-permit" }] }));
+    toast.success(`Deposit ₹${deposit} paid (demo). Your booking is pending admin approval.`);
   };
   return (
     <Card className="space-y-4 p-6">
@@ -74,7 +73,7 @@ function EventBooking() {
       <div className="rounded-lg bg-secondary p-4 text-sm">
         <div className="flex justify-between"><span>Estimated total</span><span>₹{total}</span></div>
         <div className="flex justify-between font-semibold"><span>Pay now (40%)</span><span>₹{deposit}</span></div>
-        <p className="mt-2 text-muted-foreground">You can cancel up to 1 day before. The 40% advance is not refundable. {f.guests >= BIG_EVENT_GUESTS && "Events with " + BIG_EVENT_GUESTS + "+ guests need admin approval before confirmation."}</p>
+        <p className="mt-2 text-muted-foreground">All event bookings require admin approval before confirmation. You can cancel up to 1 day before. The 40% advance is not refundable.</p>
       </div>
       <Button onClick={submit}>Pay 40% & book</Button>
     </Card>
