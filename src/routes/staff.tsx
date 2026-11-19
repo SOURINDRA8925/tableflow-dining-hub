@@ -296,7 +296,7 @@ function Waiter() {
   const freeTables = TABLES.filter((t) => getTableStatus(t).badge === "available");
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+    <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
       <Card className="space-y-4 p-3 sm:p-5 min-w-0">
         <div className="flex items-start sm:items-center justify-between gap-3 border-b border-border pb-3 flex-wrap">
           <div className="min-w-0 flex-1">
@@ -362,10 +362,10 @@ function Waiter() {
             </SelectContent>
           </Select>
 
-          {/* Quick horizontal scrollable table buttons */}
-          <div className="pt-1">
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-1">
-              <span className="text-xs text-muted-foreground">Quick select (scroll to browse tables):</span>
+          {/* Quick Table Grid (Wraps responsively - NO horizontal scrolling required!) */}
+          <div className="pt-1 space-y-1.5">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-xs font-medium text-muted-foreground">Select a table to take orders:</span>
               <span className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-x-2 gap-y-1">
                 <span>
                   <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 mr-1" />
@@ -384,7 +384,7 @@ function Waiter() {
               </span>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-2.5 pt-0.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-1.5 pt-0.5">
               {TABLES.map((t) => {
                 const st = getTableStatus(t);
                 const isCurrent = table === t;
@@ -397,8 +397,8 @@ function Waiter() {
                     disabled={st.disabled}
                     variant={isCurrent ? "default" : "outline"}
                     className={cn(
-                      "h-8 shrink-0 px-3 text-xs font-medium transition-all",
-                      isCurrent && "ring-2 ring-primary ring-offset-1 font-bold",
+                      "h-10 px-1 text-xs font-medium transition-all flex flex-col items-center justify-center min-w-0",
+                      isCurrent && "ring-2 ring-primary ring-offset-1 font-bold shadow-sm",
                       st.isOtherWaitersTable &&
                         "cursor-not-allowed border-amber-500/50 bg-amber-500/10 text-amber-900/60 dark:text-amber-200/60 opacity-60 line-through",
                       st.isMyTable &&
@@ -408,14 +408,18 @@ function Waiter() {
                     title={st.label}
                     onClick={() => selectAndLockTable(t)}
                   >
-                    {st.isOtherWaitersTable && <Lock className="mr-1 h-3 w-3 inline text-amber-600 shrink-0" />}
-                    {st.isMyTable && !isCurrent && <Utensils className="mr-1 h-3 w-3 inline text-primary shrink-0" />}
-                    Table {t}
+                    <div className="flex items-center gap-1 leading-none">
+                      {st.isOtherWaitersTable && <Lock className="h-2.5 w-2.5 text-amber-600 shrink-0" />}
+                      {st.isMyTable && !isCurrent && <Utensils className="h-2.5 w-2.5 text-primary shrink-0" />}
+                      <span>T-{t}</span>
+                    </div>
                     {st.isOtherWaitersTable && (
-                      <span className="ml-1 text-[10px] no-underline font-normal">({st.assignedWaiter})</span>
+                      <span className="text-[9px] no-underline font-normal truncate max-w-full opacity-80 leading-none mt-0.5">
+                        {st.assignedWaiter?.split(" ")[0]}
+                      </span>
                     )}
                     {st.isMyTable && !isCurrent && (
-                      <span className="ml-1 text-[10px] font-normal">(Yours)</span>
+                      <span className="text-[9px] font-normal text-primary leading-none mt-0.5">Yours</span>
                     )}
                   </Button>
                 );
