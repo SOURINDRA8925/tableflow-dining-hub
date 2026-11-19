@@ -298,16 +298,16 @@ function Waiter() {
   return (
     <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
       <Card className="space-y-4 p-3 sm:p-5 min-w-0">
-        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 border-b border-border pb-3">
-          <div className="min-w-0">
+        <div className="flex items-start sm:items-center justify-between gap-3 border-b border-border pb-3 flex-wrap">
+          <div className="min-w-0 flex-1">
             <h2 className="text-xl font-semibold">New table order</h2>
             <p className="text-xs text-muted-foreground">Select an open table to seat guests, or select your occupied table to add items</p>
           </div>
-          <div className="flex items-center gap-2 rounded-lg bg-secondary/80 px-2.5 py-1 self-start sm:self-auto">
+          <div className="flex items-center gap-2 rounded-lg bg-secondary/80 px-2.5 py-1 shrink-0 self-start sm:self-center">
             <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
             <span className="text-xs font-medium">Waiter:</span>
             <Select value={currentWaiter} onValueChange={handleWaiterChange}>
-              <SelectTrigger className="h-7 w-32 border-0 bg-transparent text-xs font-semibold focus:ring-0">
+              <SelectTrigger className="h-7 w-28 border-0 bg-transparent text-xs font-semibold focus:ring-0 p-0 shadow-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -384,7 +384,7 @@ function Waiter() {
               </span>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+            <div className="flex gap-2 overflow-x-auto pb-2.5 pt-0.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
               {TABLES.map((t) => {
                 const st = getTableStatus(t);
                 const isCurrent = table === t;
