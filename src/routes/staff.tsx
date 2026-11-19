@@ -296,8 +296,8 @@ function Waiter() {
   const freeTables = TABLES.filter((t) => getTableStatus(t).badge === "available");
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
-      <Card className="space-y-4 p-3 sm:p-5 min-w-0">
+    <div className="space-y-8 w-full max-w-full">
+      <Card className="space-y-4 p-4 sm:p-6 w-full max-w-full">
         <div className="flex items-start sm:items-center justify-between gap-3 border-b border-border pb-3 flex-wrap">
           <div className="min-w-0 flex-1">
             <h2 className="text-xl font-semibold">New table order</h2>
@@ -482,24 +482,40 @@ function Waiter() {
             : `Send order · ₹${priceOf(menu, items)}`}
         </Button>
       </Card>
-      <div className="space-y-3">
-        <h2 className="text-2xl">Ready to serve</h2>
-        {ready.length === 0 && <p className="text-sm text-muted-foreground">Nothing ready yet.</p>}
-        {ready.map((o) => (
-          <OrderCard key={o.id} o={o}>
-            <Button
-              size="sm"
-              onClick={() =>
-                set((s) => ({
-                  ...s,
-                  orders: s.orders.map((x) => (x.id === o.id ? { ...x, status: "served" } : x)),
-                }))
-              }
-            >
-              Mark served
-            </Button>
-          </OrderCard>
-        ))}
+      <div className="space-y-3 pt-2">
+        <div className="flex items-center justify-between border-b border-border pb-2">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <span>Ready to serve</span>
+            {ready.length > 0 && (
+              <Badge className="bg-emerald-600 text-white font-bold">{ready.length} ready</Badge>
+            )}
+          </h2>
+          {ready.length === 0 && <span className="text-xs text-muted-foreground">Kitchen is cooking</span>}
+        </div>
+        {ready.length === 0 ? (
+          <Card className="p-4 text-center text-xs text-muted-foreground bg-muted/20">
+            No dishes ready to serve yet. Newly cooked orders will appear here.
+          </Card>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {ready.map((o) => (
+              <OrderCard key={o.id} o={o}>
+                <Button
+                  size="sm"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+                  onClick={() =>
+                    set((s) => ({
+                      ...s,
+                      orders: s.orders.map((x) => (x.id === o.id ? { ...x, status: "served" } : x)),
+                    }))
+                  }
+                >
+                  Mark served
+                </Button>
+              </OrderCard>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -575,15 +591,21 @@ function Biometric() {
 
 function StaffPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 overflow-x-hidden">
-      <h1 className="mb-4 text-4xl">Staff console</h1>
-      <Tabs defaultValue="waiter">
-        <TabsList className="flex-wrap h-auto"><TabsTrigger value="waiter">Waiter</TabsTrigger><TabsTrigger value="cook">Cook</TabsTrigger><TabsTrigger value="cashier">Cashier</TabsTrigger><TabsTrigger value="portions">Portions</TabsTrigger><TabsTrigger value="bio">Attendance</TabsTrigger></TabsList>
-        <TabsContent value="waiter"><Waiter /></TabsContent>
-        <TabsContent value="cook"><Cook /></TabsContent>
-        <TabsContent value="cashier"><Cashier /></TabsContent>
-        <TabsContent value="portions"><Portions /></TabsContent>
-        <TabsContent value="bio"><Biometric /></TabsContent>
+    <main className="mx-auto max-w-5xl px-3 sm:px-6 py-6 sm:py-8 w-full overflow-x-hidden">
+      <h1 className="mb-4 text-3xl sm:text-4xl">Staff console</h1>
+      <Tabs defaultValue="waiter" className="w-full">
+        <TabsList className="flex-wrap h-auto w-full justify-start gap-1 p-1">
+          <TabsTrigger value="waiter">Waiter</TabsTrigger>
+          <TabsTrigger value="cook">Cook</TabsTrigger>
+          <TabsTrigger value="cashier">Cashier</TabsTrigger>
+          <TabsTrigger value="portions">Portions</TabsTrigger>
+          <TabsTrigger value="bio">Attendance</TabsTrigger>
+        </TabsList>
+        <TabsContent value="waiter" className="w-full"><Waiter /></TabsContent>
+        <TabsContent value="cook" className="w-full"><Cook /></TabsContent>
+        <TabsContent value="cashier" className="w-full"><Cashier /></TabsContent>
+        <TabsContent value="portions" className="w-full"><Portions /></TabsContent>
+        <TabsContent value="bio" className="w-full"><Biometric /></TabsContent>
       </Tabs>
     </main>
   );
